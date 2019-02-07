@@ -2,7 +2,7 @@ package Ex1_2;
 
 import edu.princeton.cs.algs4.StdIn;
 
-public class Ex_6 {
+public class Ex6 {
     public static void main(String[] args) {
         System.out.println("s: ");
         String s = StdIn.readLine();
