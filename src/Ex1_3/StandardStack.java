@@ -1,13 +1,24 @@
 package Ex1_3;
 
-public class StandardStack<T> {
+import java.util.Iterator;
+
+public class StandardStack<T> implements Iterable<T>{
     private int ptr = 0;
     private T[] stack;
 
     public static void main(String[] args) {
-        StandardStack<String> s = new StandardStack(2);
+        StandardStack<String> s = new StandardStack<>(2);
         s.push("q");
-        System.out.println(s.pop());
+        s.push("q");
+        s.push("q");
+        s.push("q");
+        for (String item : s) {
+            System.out.println(item);
+            s.push(item);
+        }
+        for (String item : s) {
+            System.out.println(item);
+        }
     }
 
     public StandardStack(int cap) {
@@ -48,5 +59,24 @@ public class StandardStack<T> {
             temp[i] = stack[i];
         }
         stack = temp;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ReverseArrayIterator();
+    }
+
+    private class ReverseArrayIterator implements Iterator<T> {
+
+        private int i = ptr;
+        @Override
+        public boolean hasNext() {
+            return i > 0;
+        }
+
+        @Override
+        public T next() {
+            return stack[--i];
+        }
     }
 }
