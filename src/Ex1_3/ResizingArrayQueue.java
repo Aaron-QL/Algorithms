@@ -50,7 +50,7 @@ public class ResizingArrayQueue<E> implements Iterable<E> {
         head = n;
     }
 
-    public void enqueue(E item) {
+    void enqueue(E item) {
         if (head == queue.length) {
             resize();
         }
@@ -58,7 +58,7 @@ public class ResizingArrayQueue<E> implements Iterable<E> {
         n++;
     }
 
-    public E dequeue() {
+    E dequeue() {
         if (isEmpty()) {
             throw new NoSuchElementException("Queue underflow");
         }
