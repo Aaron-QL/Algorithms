@@ -36,6 +36,14 @@ public class Stack<Item> implements Iterable<Item> {
         }
     }
 
+    void removeAfter(Node item) {
+        if (item != null) {
+            item.next = null;
+        }
+    }
+
+    
+
     private int n = 0;
 
     private Node first;
