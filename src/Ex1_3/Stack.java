@@ -15,6 +15,27 @@ public class Stack<Item> implements Iterable<Item> {
         }
     }
 
+    void delete(int k) {
+        if (k > size() || k < 1) {
+            throw new NoSuchElementException();
+        }
+
+        if (k == 1) {
+            first = first.next;
+        } else {
+            int i = 1;
+            Node current = first;
+            while (i < k - 1) {
+                current = current.next;
+            }
+            if (k == size()) {
+                current.next = null;
+            } else {
+                current.next = current.next.next;
+            }
+        }
+    }
+
     private int n = 0;
 
     private Node first;
