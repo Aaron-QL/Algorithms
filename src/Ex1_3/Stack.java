@@ -42,7 +42,11 @@ public class Stack<Item> implements Iterable<Item> {
         }
     }
 
-    
+    void insertAfter(Node a, Node b) {
+        if (a != null || b != null) {
+            a.next = b;
+        }
+    }
 
     private int n = 0;
 
