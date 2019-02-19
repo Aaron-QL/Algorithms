@@ -46,4 +46,20 @@ public class WeightedQuickUnionUF {
         }
         count--;
     }
+
+    public void uniona(int p, int q) {
+        int pRoot = find(p);
+        int qRoot = find(q);
+        if (pRoot == qRoot) {
+            return;
+        }
+        if (sz[pRoot] < sz[qRoot]) {
+            id[pRoot] = qRoot;
+            sz[qRoot] += sz[pRoot];
+        } else {
+            id[qRoot] = pRoot;
+            sz[pRoot] += sz[qRoot];
+        }
+        count--;
+    }
 }
