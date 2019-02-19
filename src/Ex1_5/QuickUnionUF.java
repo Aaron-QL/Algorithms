@@ -1,11 +1,11 @@
 package Ex1_5;
 
-public class UFQuickUnion {
+public class QuickUnionUF {
 
     private int[] id;
     private int count;
 
-    UFQuickUnion(int n) {
+    QuickUnionUF(int n) {
         count = n;
         id = new int[n];
         for (int i = 0; i < n; i++) {

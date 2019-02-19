@@ -1,10 +1,10 @@
 package Ex1_5;
 
-public class UFQuickFind {
+public class QuickFindUF {
     private int[] id;
     private int count;
 
-    UFQuickFind(int n) {
+    QuickFindUF(int n) {
         count = n;
         id = new int[n];
         for (int i = 0; i < n; i++) {
