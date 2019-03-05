@@ -10,16 +10,16 @@ public class InsertionSort {
 
     static int[] sort(int[] arr) {
         int n = arr.length;
-        int preIndex, current;
         for (int i = 1; i < n; i++) {
-            preIndex = i - 1;
-            current = arr[i];
+            int preIndex = i - 1;
+            int current = arr[i];
             while (preIndex >= 0 && arr[preIndex] > current) {
                 arr[preIndex + 1] = arr[preIndex];
                 preIndex--;
             }
             arr[preIndex + 1] = current;
         }
+
         return arr;
     }
 }
