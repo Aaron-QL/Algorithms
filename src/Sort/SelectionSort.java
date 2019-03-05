@@ -10,7 +10,6 @@ public class SelectionSort {
 
     static int[] sort(int[] arr) {
         int len = arr.length;
-        int tempIndex, temp;
 
         for (int i = 0; i < len - 1; i++) {
             int minIndex = i;
@@ -19,7 +18,7 @@ public class SelectionSort {
                     minIndex = j;
                 }
             }
-            temp = arr[minIndex];
+            int temp = arr[minIndex];
             arr[minIndex] = arr[i];
             arr[i] = temp;
         }

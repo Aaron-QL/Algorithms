@@ -1,19 +1,56 @@
-package Ex1_3;
+package Ex1_4;
 
-import java.util.EmptyStackException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Stack<Item> implements Iterable<Item> {
 
     public static void main(String[] args) {
         Stack<String> s = new Stack<>();
-        s.push("a");
-        s.push("b");
-        s.push("c");
+        s.push("q");
+        s.push("w");
+        s.push("e");
         for (String item : s) {
             System.out.println(item);
         }
     }
+
+    void delete(int k) {
+        if (k > size() || k < 1) {
+            throw new NoSuchElementException();
+        }
+
+        if (k == 1) {
+            first = first.next;
+        } else {
+            int i = 1;
+            Node current = first;
+            while (i < k - 1) {
+                current = current.next;
+            }
+            if (k == size()) {
+                current.next = null;
+            } else {
+                current.next = current.next.next;
+            }
+        }
+    }
+
+    void removeAfter(Node item) {
+        if (item != null) {
+            item.next = null;
+        }
+    }
+
+    void insertAfter(Node a, Node b) {
+        if (a != null || b != null) {
+            a.next = b;
+        }
+    }
+
+    private int n = 0;
+
+    private Node first;
 
     @Override
     public Iterator<Item> iterator() {
@@ -39,20 +76,6 @@ public class Stack<Item> implements Iterable<Item> {
     private class Node {
         Item item;
         Node next;
-        Node prev;
-    }
-
-    private Node first;
-    private Node last;
-    private int n;
-
-    boolean isEmpty()
-    {
-        return n == 0;
-    }
-
-    int size() {
-        return n;
     }
 
     void push(Item item) {
@@ -60,19 +83,24 @@ public class Stack<Item> implements Iterable<Item> {
         first = new Node();
         first.item = item;
         first.next = oldFirst;
-        oldFirst.prev = first;
         n++;
     }
 
     Item pop() {
         if (isEmpty()) {
-            throw new EmptyStackException();
+            throw new NoSuchElementException();
         }
-
         Node oldFirst = first;
         first = first.next;
-        first.prev = null;
         n--;
         return oldFirst.item;
+    }
+
+    boolean isEmpty() {
+        return n == 0;
+    }
+
+    int size() {
+        return n;
     }
 }
