@@ -7,7 +7,7 @@ public class MaxPQ<Key extends Comparable<Key>> {
     private int n = 0;
 
     public static void main(String[] args) {
-        MaxPQ<Integer> pq = new MaxPQ<>(9);
+        MaxPQ<Integer> pq = new MaxPQ<>(20);
         pq.insert(4);
         pq.insert(3);
         pq.insert(1);
@@ -41,16 +41,19 @@ public class MaxPQ<Key extends Comparable<Key>> {
 
     void swim(int k) {
         while (k > 1 && less(k / 2, k)) {
-            exch(k/2, k);
+            exch(k / 2, k);
             k /= 2;
         }
     }
 
     void sink(int k) {
-        while (2 * k <= n) {
-            int j = 2 * k;
+        while (k * 2 <= n) {
+            int j = k * 2;
             if (j < n && less(j, j + 1)) {
                 j++;
+            }
+            if (!less(k, j)) {
+                break;
             }
             exch(k, j);
             k = j;
