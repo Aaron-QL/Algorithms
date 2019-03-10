@@ -2,25 +2,49 @@ package Ex2_1;
 
 import edu.princeton.cs.algs4.StdOut;
 
-public class Insertion {
+import java.util.Arrays;
+
+public class Heap {
 
     public static void main(String[] args) {
-        String[] a = {"a", "b", "a", "d", "w", "e"};
-        Integer[] b = {6, 2, 6, 4, 6, 6, 5};
-        sort(b);
-        assert isSorted(b);
-        show(b);
+        Integer[] a = {1, 3, 2, 11, 9, 1, 1, 4, 2, 8};
+        sort(a);
+        assert isSorted(a);
+        show(a);
     }
+
 
     public static void sort(Comparable[] a) {
         int n = a.length;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {
-                exch(a, j - 1, j);
-            }
+        for (int k = n / 2 - 1; k >= 0; k--) {
+            sink(a, k, n);
+        }
+
+        System.out.println(Arrays.toString(a));
+        while (n > 1) {
+            exch(a, 0, --n);
+            sink(a, 0, n);
         }
     }
+
+    private static void sink(Comparable[] a, int k, int n) {
+        int largest = k;
+        int left = 2 * k + 1;
+        int right = left + 1;
+
+        if (left < n && less(a[largest], a[left])) {
+            largest = left;
+        }
+        if (right < n && less(a[largest], a[right])) {
+            largest = right;
+        }
+        if (largest != k) {
+            exch(a, k, largest);
+            sink(a, largest, n);
+        }
+    }
+
 
     private static boolean less(Comparable v, Comparable w) {
         return v.compareTo(w) < 0;
@@ -47,5 +71,4 @@ public class Insertion {
         }
         return true;
     }
-
 }
