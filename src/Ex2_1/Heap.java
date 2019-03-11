@@ -13,15 +13,12 @@ public class Heap {
         show(a);
     }
 
-
     public static void sort(Comparable[] a) {
         int n = a.length;
-
-        for (int k = n / 2 - 1; k >= 0; k--) {
+        for (int k = n / 2; k >= 0; k--) {
             sink(a, k, n);
         }
 
-        System.out.println(Arrays.toString(a));
         while (n > 1) {
             exch(a, 0, --n);
             sink(a, 0, n);
@@ -30,24 +27,25 @@ public class Heap {
 
     private static void sink(Comparable[] a, int k, int n) {
         int largest = k;
-        int left = 2 * k + 1;
+        int left = k * 2 + 1;
         int right = left + 1;
 
         if (left < n && less(a[largest], a[left])) {
             largest = left;
         }
+
         if (right < n && less(a[largest], a[right])) {
             largest = right;
         }
+
         if (largest != k) {
             exch(a, k, largest);
             sink(a, largest, n);
         }
     }
 
-
-    private static boolean less(Comparable v, Comparable w) {
-        return v.compareTo(w) < 0;
+    private static boolean less(Comparable i, Comparable j) {
+        return i.compareTo(j) < 0;
     }
 
     private static void exch(Comparable[] a, int i, int j) {
