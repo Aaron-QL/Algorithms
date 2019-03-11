@@ -2,8 +2,6 @@ package Ex2_1;
 
 import edu.princeton.cs.algs4.StdOut;
 
-import java.util.Arrays;
-
 public class Heap {
 
     public static void main(String[] args) {

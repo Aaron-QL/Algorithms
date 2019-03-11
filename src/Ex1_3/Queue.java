@@ -40,7 +40,7 @@ public class Queue<Item> implements Iterable<Item> {
         return n;
     }
 
-    void enqueue(Item item) {
+    public void enqueue(Item item) {
         Node oldLast = last;
         last = new Node();
         last.item = item;
