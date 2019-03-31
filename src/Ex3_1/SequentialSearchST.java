@@ -20,6 +20,14 @@ public class SequentialSearchST<Key, Value> {
         }
     }
 
+    public boolean contains(Key key) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return get(key) != null;
+    }
+
     public Value get(Key key) {
         for (Node i = first; i != null; i = i.next) {
             if (key.equals(i.key)) {
@@ -42,6 +50,10 @@ public class SequentialSearchST<Key, Value> {
 
     public int size() {
         return n;
+    }
+
+    public boolean isEmpty() {
+        return n == 0;
     }
 
     public Iterable<Key> keys() {
