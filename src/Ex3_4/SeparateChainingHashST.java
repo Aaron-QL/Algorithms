@@ -3,9 +3,9 @@ package Ex3_4;
 import Ex1_3.Queue;
 import Ex3_1.SequentialSearchST;
 
-public class SeparateChainingHastST<Key, Value> {
+public class SeparateChainingHashST<Key, Value> {
     public static void main(String[] args) {
-        SeparateChainingHastST<String, Integer> st = new SeparateChainingHastST<>();
+        SeparateChainingHashST<String, Integer> st = new SeparateChainingHashST<>();
         st.put("a", 1);
         st.put("ab", 2);
         st.put("ac", 3);
@@ -27,11 +27,11 @@ public class SeparateChainingHastST<Key, Value> {
     private int m;
     private SequentialSearchST<Key, Value> st[];
 
-    public SeparateChainingHastST() {
+    public SeparateChainingHashST() {
         this(997);
     }
 
-    public SeparateChainingHastST(int m) {
+    public SeparateChainingHashST(int m) {
         this.m = m;
         st = (SequentialSearchST<Key, Value>[]) new SequentialSearchST[m];
         for (int i = 0; i < m; i++) {
@@ -56,7 +56,7 @@ public class SeparateChainingHastST<Key, Value> {
     }
 
     private void resize(int capacity) {
-        SeparateChainingHastST<Key, Value> t = new SeparateChainingHastST<>(capacity);
+        SeparateChainingHashST<Key, Value> t = new SeparateChainingHashST<>(capacity);
         for (int i = 0; i < capacity; i++) {
             for (Key key : st[i].keys()) {
                 t.put(key, st[i].get(key));
