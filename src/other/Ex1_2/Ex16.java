@@ -1,0 +1,5 @@
+package other.Ex1_2;
+
+public class Ex16 {
+
+}
