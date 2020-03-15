@@ -1,6 +1,7 @@
 package ch1.se3;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ResizingArrayStack<Item> implements Iterable<Item> {
     private Item[] a = (Item[]) new Object[1];
@@ -39,7 +40,7 @@ public class ResizingArrayStack<Item> implements Iterable<Item> {
 
     public Item pop() throws Exception {
         if (isEmpty()) {
-            throw new Exception("stack is empty");
+            throw new NoSuchElementException("stack is empty");
         }
         Item item = a[--N];
         a[N] = null;
