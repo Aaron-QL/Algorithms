@@ -103,18 +103,20 @@ public class Stack<Item> implements Iterable<Item> {
         }
 
         @Override
-        public Item next() {
+        public Item next()
+        {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             Item item = current.item;
-            current = first.next;
+            current = current.next;
             return item;
         }
     }
 
     @Override
-    public Iterator<Item> iterator() {
+    public Iterator<Item> iterator()
+    {
         return new LinkedIterator(first);
     }
 }
