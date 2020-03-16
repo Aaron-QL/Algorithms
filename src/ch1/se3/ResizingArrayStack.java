@@ -38,7 +38,7 @@ public class ResizingArrayStack<Item> implements Iterable<Item> {
         a[N++] = item;
     }
 
-    public Item pop() throws Exception {
+    public Item pop() {
         if (isEmpty()) {
             throw new NoSuchElementException("stack is empty");
         }
