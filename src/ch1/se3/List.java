@@ -1,6 +1,5 @@
 package ch1.se3;
 
-import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Iterator;
@@ -162,6 +161,20 @@ public class List<Item> implements Iterable<Item> {
         }
     }
 
+    public Integer max()
+    {
+        if (isEmpty()) {
+            return 0;
+        }
+        Integer max = Integer.MIN_VALUE;
+        Node current = first;
+        while (current != null) {
+            Integer t = (Integer) current.item;
+            max = Math.max(max, t);
+            current = current.next;
+        }
+        return max;
+    }
 
     public String toString()
     {
@@ -218,6 +231,7 @@ public class List<Item> implements Iterable<Item> {
         testRemoveAfter();
         testInsertAfter();
         testRemove();
+        testMax();
     }
 
     public static void testDelete() {
@@ -358,5 +372,17 @@ public class List<Item> implements Iterable<Item> {
 
         StdOut.println(listAfterRemove.toString());
         StdOut.println("Expected: Bill Elon Rene Elon");
+    }
+
+    public static void testMax() {
+        List<Integer> linkedList = new List<>();
+        linkedList.add(3);
+        linkedList.add(91);
+        linkedList.add(2);
+        linkedList.add(9);
+
+        int maxValue = linkedList.max();
+        StdOut.println("Max value: " + maxValue);
+        StdOut.println("Expected: 91");
     }
 }
