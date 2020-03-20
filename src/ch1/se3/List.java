@@ -176,6 +176,36 @@ public class List<Item> implements Iterable<Item> {
         return max;
     }
 
+    public Node reverse()
+    {
+        if (isEmpty() || size() == 1) {
+            return first;
+        }
+
+        Node reverse = null;
+        while (first != null) {
+            Node second = first.next;
+            first.next = reverse;
+            reverse = first;
+            first = second;
+        }
+        first = reverse;
+        return first;
+    }
+
+    public Node reverse2(Node first)
+    {
+        if (first == null || first.next == null) {
+            return first;
+        }
+        Node second = first.next;
+        Node rest = reverse2(second);
+        rest.next = first;
+        first.next = null;
+
+        return rest;
+    }
+
     public String toString()
     {
         StringBuilder s = new StringBuilder();
@@ -226,12 +256,13 @@ public class List<Item> implements Iterable<Item> {
 
     public static void main(String[] args)
     {
-        testDelete();
-        testFind();
-        testRemoveAfter();
-        testInsertAfter();
-        testRemove();
-        testMax();
+//        testDelete();
+//        testFind();
+//        testRemoveAfter();
+//        testInsertAfter();
+//        testRemove();
+//        testMax();
+        testReverse();
     }
 
     public static void testDelete() {
@@ -384,5 +415,23 @@ public class List<Item> implements Iterable<Item> {
         int maxValue = linkedList.max();
         StdOut.println("Max value: " + maxValue);
         StdOut.println("Expected: 91");
+    }
+
+    public static void testReverse() {
+        List<Integer> linkedList = new List<>();
+        linkedList.add(1);
+        linkedList.add(2);
+        linkedList.add(3);
+        linkedList.add(4);
+
+        linkedList.reverse();
+
+        StringJoiner listItems = new StringJoiner(" ");
+        for (int item : linkedList) {
+            listItems.add(String.valueOf(item));
+        }
+
+        StdOut.println("Reverse list items: " + listItems.toString());
+        StdOut.println("Expected: 4 3 2 1");
     }
 }
