@@ -2,7 +2,7 @@ package ch2.se1;
 
 import edu.princeton.cs.algs4.StdOut;
 
-public class Selection {
+public class Shell {
 
     public static void main(String[] args) {
         String[] a = {"S", "O", "R", "T", "E", "X", "A", "M", "P", "L", "E"};
@@ -12,15 +12,18 @@ public class Selection {
     }
 
     public static void sort(Comparable[] a) {
-        int i, j, min;
-        for (i = 0; i < a.length - 1; i++) {
-            min = i;
-            for (j = i + 1; j < a.length; j++) {
-                if (less(a[j], a[min])) {
-                    min = j;
+        int h = 1;
+        while (h < a.length / 3) {
+            h = h * 3 + 1;
+        }
+        while (h >= 1) {
+            for (int i = h; i < a.length; i++) {
+                for (int j = i; j >= h && less(a[j], a[j - h]); j -= h) {
+//                    show(a);
+                    exch(a, j, j - h);
                 }
             }
-            exch(a, i, min);
+            h /= 3;
         }
     }
 

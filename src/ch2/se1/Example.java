@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.StdOut;
 public class Example {
 
     public static void main(String[] args) {
-        String[] a = {"a", "b", "a", "aref", "a", "123"};
+        String[] a = {"S", "O", "R", "T", "E", "X", "A", "M", "P", "L", "E"};
         sort(a);
         assert isSorted(a);
         show(a);
