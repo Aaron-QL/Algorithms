@@ -1,12 +1,11 @@
-package other.Ex2_1;
+package ch2.se1;
 
 import edu.princeton.cs.algs4.StdOut;
 
 public class Example {
 
     public static void main(String[] args) {
-        String[] a = {"a", "b", "a"};
-        Integer[] b = {1, 2};
+        String[] a = {"a", "b", "a", "aref", "a", "123"};
         sort(a);
         assert isSorted(a);
         show(a);
@@ -45,5 +44,4 @@ public class Example {
         }
         return true;
     }
-
 }

@@ -1,27 +1,26 @@
-package other.Ex2_1;
+package ch2.se1;
 
 import edu.princeton.cs.algs4.StdOut;
 
 public class Selection {
 
     public static void main(String[] args) {
-        String[] a = {"a", "b", "a", "d", "w", "e"};
+        String[] a = {"a", "b", "a", "aref", "a", "123"};
         sort(a);
         assert isSorted(a);
         show(a);
     }
 
     public static void sort(Comparable[] a) {
-        int n = a.length;
-
-        for (int i = 0; i < n; i++) {
-            int minIndex = i;
-            for (int j = i + 1; j < n; j++) {
-                if (less(a[j], a[minIndex])) {
-                    minIndex = j;
+        int i, j, min;
+        for (i = 0; i < a.length - 1; i++) {
+            min = i;
+            for (j = i + 1; j < a.length; j++) {
+                if (less(a[j], a[min])) {
+                    min = j;
                 }
             }
-            exch(a, i, minIndex);
+            exch(a, i, min);
         }
     }
 
@@ -54,5 +53,4 @@ public class Selection {
         }
         return true;
     }
-
 }
