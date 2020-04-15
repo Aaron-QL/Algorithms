@@ -1,4 +1,4 @@
-package ch2.se1;
+package ch2.se2;
 
 import edu.princeton.cs.algs4.StdOut;
 
@@ -29,21 +29,20 @@ public class Merge {
         merge(a, lo, mid, hi);
     }
 
-    public static void merge(Comparable[] a, int lo, int mid, int hi) {
+    private static void merge(Comparable[] a, int lo, int mid, int hi) {
         int i = lo;
         int j = mid + 1;
-        
         for (int k = lo; k <= hi; k++) {
             aux[k] = a[k];
         }
 
         for (int k = lo; k <= hi; k++) {
             if (i > mid) {
-                a[k] = a[j++];
+                a[k] = aux[j++];
             } else if (j > hi) {
-                a[k] = a[i++];
+                a[k] = aux[i++];
             } else if (less(a[i], a[j])) {
-                a[k] = a[i++];
+                a[k] = aux[i++];
             } else {
                 a[k] = aux[j++];
             }
