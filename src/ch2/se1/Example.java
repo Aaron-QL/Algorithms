@@ -11,7 +11,8 @@ public class Example {
         show(a);
     }
 
-    public static void sort(Comparable[] a) {
+    public static void sort(Comparable[] a)
+    {
 
     }
 
