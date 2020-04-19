@@ -23,7 +23,6 @@ public class Quick {
         if (hi <= lo) {
             return;
         }
-
         int j = partition(a, lo, hi);
         sort(a, lo, j - 1);
         sort(a, j + 1, hi);
@@ -33,7 +32,6 @@ public class Quick {
     {
         int i = lo, j = hi + 1;
         Comparable v = a[lo];
-
         while (true) {
             while (less(a[++i], v)) {
                 if (i == hi) {
