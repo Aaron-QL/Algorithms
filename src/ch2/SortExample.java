@@ -2,7 +2,7 @@ package ch2;
 
 import edu.princeton.cs.algs4.StdOut;
 
-public class Example {
+public class SortExample {
 
     public static void main(String[] args) {
         String[] a = {"S", "O", "R", "T", "E", "X", "A", "M", "P", "L", "E"};
