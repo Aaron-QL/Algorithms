@@ -6,6 +6,7 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@SuppressWarnings("unchecked")
 public class Queue<Item> implements Iterable<Item> {
     private class Node<Item> {
         Item item;
