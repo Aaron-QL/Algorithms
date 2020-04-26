@@ -1,15 +1,16 @@
 package ch3;
 
 import ch1.se3.Queue;
-import edu.princeton.cs.algs4.StdIn;
+import ch1.se3.Stack;
 import edu.princeton.cs.algs4.StdOut;
 
 public class BST<Key extends Comparable<Key>, Value> {
     private class Node {
-        private Key key;
-        private Value val;
-        private Node left, right;
-        private int size;
+        Key key;
+        Value val;
+        Node left;
+        Node right;
+        int size;
 
         public Node(Key key, Value val, int size) {
             this.key = key;
@@ -18,22 +19,27 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
     }
 
+    public BST() {
+
+    }
+
+
     private Node root;
 
     public int size() {
         return size(root);
     }
 
-    private int size(Node x) {
+    public int size(Node x) {
         return x == null ? 0 : x.size;
+    }
+
+    private void resize(Node x) {
+        x.size = size(x.left) + 1 + size(x.right);
     }
 
     public boolean isEmpty() {
         return size() == 0;
-    }
-
-    public BST() {
-
     }
 
     public boolean contain(Key key) {
@@ -41,15 +47,18 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     public Value get(Key key) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
         return get(root, key);
     }
 
     private Value get(Node x, Key key) {
-        if (key == null) {
-            throw new IllegalArgumentException();
-        }
         if (x == null) {
             return null;
+        }
+        if (key == null) {
+            throw new IllegalArgumentException();
         }
         int comp = key.compareTo(x.key);
         if (comp < 0) {
@@ -63,19 +72,21 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     public void put(Key key, Value val) {
         if (key == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("calls put() with a null key");
         }
         if (val == null) {
             delete(key);
             return;
         }
         root = put(root, key, val);
+        assert check();
     }
 
     private Node put(Node x, Key key, Value val) {
         if (x == null) {
             return new Node(key, val, 1);
         }
+
         int comp = key.compareTo(x.key);
         if (comp < 0) {
             x.left = put(x.left, key, val);
@@ -84,7 +95,8 @@ public class BST<Key extends Comparable<Key>, Value> {
         } else {
             x.val = val;
         }
-        x.size = size(x.left) + size(x.right) + 1;
+
+        x.size = 1 + size(x.left) + size(x.right);
         return x;
     }
 
@@ -92,7 +104,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return root == null ? null : min(root).key;
     }
 
-    public Node min(Node x) {
+    private Node min(Node x) {
         return x.left == null ? x : min(x.left);
     }
 
@@ -100,7 +112,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return root == null ? null : max(root).key;
     }
 
-    public Node max(Node x) {
+    private Node max(Node x) {
         return x.right == null ? x : max(x.right);
     }
 
@@ -108,8 +120,8 @@ public class BST<Key extends Comparable<Key>, Value> {
         if (key == null) {
             throw new IllegalArgumentException();
         }
-        Node x = floor(root, key);
-        return x == null ? null : x.key;
+        Node t = floor(root, key);
+        return t == null ? null : t.key;
     }
 
     private Node floor(Node x, Key key) {
@@ -121,15 +133,40 @@ public class BST<Key extends Comparable<Key>, Value> {
             return floor(x.left, key);
         } else if (comp == 0) {
             return x;
+        } else {
+            Node t = floor(x.right, key);
+            return t == null ? x : t;
         }
-        Node t = floor(x.right, key);
-        return t == null ? x : t;
+    }
+
+    public Key ceiling(Key key) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
+        Node t = ceiling(root, key);
+        return t == null ? null : t.key;
+    }
+
+    private Node ceiling(Node x, Key key) {
+        if (x == null) {
+            return null;
+        }
+        int comp = key.compareTo(x.key);
+        if (comp > 0) {
+            return ceiling(x.right, key);
+        } else if (comp == 0) {
+            return x;
+        } else {
+            Node t = ceiling(x.left, key);
+            return t == null ? x : t;
+        }
     }
 
     public Key select(int k) {
         if (k < 0 || k >= size()) {
             throw new IllegalArgumentException();
         }
+
         return select(root, k).key;
     }
 
@@ -140,10 +177,10 @@ public class BST<Key extends Comparable<Key>, Value> {
         int t = size(x.left);
         if (t > k) {
             return select(x.left, k);
-        } else if (t < k) {
-            return select(x.right, k - t - 1);
-        } else {
+        } else if (t == k) {
             return x;
+        } else {
+            return select(x.right, k - t - 1);
         }
     }
 
@@ -162,14 +199,19 @@ public class BST<Key extends Comparable<Key>, Value> {
         if (comp < 0) {
             return rank(x.left, key);
         } else if (comp == 0) {
-            return size(x.left);
+            return size(x.left) + 1;
         } else {
             return size(x.left) + 1 + rank(x.right, key);
         }
     }
 
     public void deleteMin() {
+        if (isEmpty()) {
+            return;
+        }
         root = deleteMin(root);
+
+        assert check();
     }
 
     private Node deleteMin(Node x) {
@@ -177,7 +219,24 @@ public class BST<Key extends Comparable<Key>, Value> {
             return x.right;
         }
         x.left = deleteMin(x.left);
-        x.size = size(x.left) + size(x.right) + 1;
+        resize(x);
+        return x;
+    }
+
+    public void deleteMax() {
+        if (isEmpty()) {
+            return;
+        }
+        root = deleteMax(root);
+        assert check();
+    }
+
+    private Node deleteMax(Node x) {
+        if (x.right == null) {
+            return x.left;
+        }
+        x.right = deleteMax(x.right);
+        resize(x);
         return x;
     }
 
@@ -185,7 +244,10 @@ public class BST<Key extends Comparable<Key>, Value> {
         if (key == null) {
             throw new IllegalArgumentException();
         }
+
         root = delete(root, key);
+
+        assert check();
     }
 
     private Node delete(Node x, Key key) {
@@ -198,31 +260,27 @@ public class BST<Key extends Comparable<Key>, Value> {
         } else if (comp > 0) {
             x.right = delete(x.right, key);
         } else {
-            if (x.right == null) {
-                return x.left;
-            }
             if (x.left == null) {
                 return x.right;
             }
+            if (x.right == null) {
+                return x.left;
+            }
             Node t = x;
             x = min(t.right);
-            x.right = deleteMin(t.right);
             x.left = t.left;
+            x.right = deleteMin(t.right);
         }
-
-        x.size = size(x.left) + size(x.right) + 1;
+        resize(x);
         return x;
     }
 
     public Iterable<Key> keys() {
-        if (isEmpty()) {
-            return new Queue<Key>();
-        }
         return keys(min(), max());
     }
 
     public Iterable<Key> keys(Key lo, Key hi) {
-        Queue<Key> queue = new Queue<Key>();
+        Queue queue = new Queue<Key>();
         keys(root, queue, lo, hi);
         return queue;
     }
@@ -231,26 +289,15 @@ public class BST<Key extends Comparable<Key>, Value> {
         if (x == null) {
             return;
         }
-        int cmplo = lo.compareTo(x.key);
-        int cmphi = hi.compareTo(x.key);
-        if (cmplo < 0) {
+        if (lo.compareTo(x.key) < 0) {
             keys(x.left, queue, lo, hi);
         }
-        if (cmplo <= 0 && cmphi >= 0) {
+        if (lo.compareTo(x.key) <= 0 && hi.compareTo(x.key) >= 0) {
             queue.enqueue(x.key);
         }
-        if (cmphi > 0) {
+        if (hi.compareTo(x.key) > 0) {
             keys(x.right, queue, lo, hi);
         }
-    }
-
-    private void print(Node x) {
-        if (x == null) {
-            return;
-        }
-        print(x.left);
-        StdOut.println(x.key);
-        print(x.right);
     }
 
     public int height() {
@@ -259,40 +306,183 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     private int height(Node x) {
         if (x == null) {
-            return -1;
+            return 0;
         }
+
         return 1 + Math.max(height(x.left), height(x.right));
     }
 
     public static void main(String[] args) {
-        BST<String, Integer> st = new BST<String, Integer>();
-        for (int i = 0; !StdIn.isEmpty(); i++) {
-            String key = StdIn.readString();
-            st.put(key, i);
-        }
+        BST<String, String> tree = new BST<>();
+        tree.put("6", "1");
+        tree.put("2", "2");
+        tree.put("7", "3");
+        tree.put("1", "4");
+        tree.put("4", "5");
+        tree.put("8", "6");
+        tree.put("3", "7");
+        tree.put("5", "8");
+        tree.preOrderTraverse();
+        tree.inOrderTraverse();
+        tree.postOrderTraverse();
+        tree.levelTraverse();
+    }
 
-        for (String s : st.levelOrder()){
-            StdOut.println(s + " " + st.get(s));
-        }
-
+    public void preOrderTraverse() {
+        StdOut.printf("前序遍历：");
+        preOrderTraverse(root);
         StdOut.println();
+    }
 
-        for (String s : st.keys()) {
-            StdOut.println(s + " " + st.get(s));
+    private void preOrderTraverse(Node x) {
+        if (x == null) {
+            return;
+        }
+        printNode(x);
+        preOrderTraverse(x.left);
+        preOrderTraverse(x.right);
+    }
+
+    private void preOrderTraverse2(Node x) {
+        Stack<Node> s = new Stack<>();
+        while (x != null || !s.isEmpty()) {
+            if (x != null) {
+                printNode(x);
+                if (x.right != null) {
+                    s.push(x.right);
+                }
+                x = x.left;
+            } else {
+                x = s.pop();
+            }
         }
     }
 
-    public Iterable<Key> levelOrder() {
-        Queue<Key> keys = new Queue<Key>();
-        Queue<Node> queue = new Queue<Node>();
-        queue.enqueue(root);
-        while (!queue.isEmpty()) {
-            Node x = queue.dequeue();
-            if (x == null) continue;
-            keys.enqueue(x.key);
-            queue.enqueue(x.left);
-            queue.enqueue(x.right);
+    public void inOrderTraverse() {
+        StdOut.printf("中序遍历：");
+        inOrderTraverse(root);
+        StdOut.println();
+    }
+
+    private void inOrderTraverse(Node x) {
+        if (x == null) {
+            return;
         }
-        return keys;
+        inOrderTraverse(x.left);
+        printNode(x);
+        inOrderTraverse(x.right);
+    }
+
+    private void inOrderTraverse2(Node x) {
+        Stack<Node> s = new Stack<>();
+        while (x != null || !s.isEmpty()) {
+            if (x != null) {
+                s.push(x);
+                x = x.left;
+            } else {
+                x = s.pop();
+                printNode(x);
+                x = x.right;
+            }
+        }
+    }
+
+    public void postOrderTraverse() {
+        StdOut.printf("后序遍历：");
+        postOrderTraverse(root);
+        StdOut.println();
+    }
+
+    private void postOrderTraverse(Node x) {
+        if (x == null) {
+            return;
+        }
+        postOrderTraverse(x.left);
+        postOrderTraverse(x.right);
+        printNode(x);
+    }
+
+    private void postOrderTraverse2(Node x) {
+        Stack<Node> s = new Stack<>();
+        while (x != null || !s.isEmpty()) {
+            if (x != null) {
+//                s.push(x);
+//                x = x.left;
+            } else {
+//                x = s.pop();
+//                printNode(x.right);
+            }
+        }
+    }
+
+    public void levelTraverse() {
+        StdOut.printf("层次遍历：");
+        levelTraverse(root);
+        StdOut.println();
+    }
+
+    public void levelTraverse(Node x) {
+        Queue<Node> q = new Queue();
+        q.enqueue(x);
+        while (!q.isEmpty()) {
+            Node t = q.dequeue();
+            printNode(t);
+            if (t.left != null) {
+                q.enqueue(t.left);
+            }
+            if (t.right != null) {
+                q.enqueue(t.right);
+            }
+        }
+    }
+
+    private void printNode(Node x) {
+        StdOut.printf("%s\t", x.val);
+    }
+
+    /*************************************************************************
+     *  Check integrity of BST data structure.
+     ***************************************************************************/
+    private boolean check() {
+        if (!isBST()) StdOut.println("Not in symmetric order");
+        if (!isSizeConsistent()) StdOut.println("Subtree counts not consistent");
+        if (!isRankConsistent()) StdOut.println("Ranks not consistent");
+        return isBST() && isSizeConsistent() && isRankConsistent();
+    }
+
+    // does this binary tree satisfy symmetric order?
+    // Note: this test also ensures that data structure is a binary tree since order is strict
+    private boolean isBST() {
+        return isBST(root, null, null);
+    }
+
+    // is the tree rooted at x a BST with all keys strictly between min and max
+    // (if min or max is null, treat as empty constraint)
+    // Credit: Bob Dondero's elegant solution
+    private boolean isBST(Node x, Key min, Key max) {
+        if (x == null) return true;
+        if (min != null && x.key.compareTo(min) <= 0) return false;
+        if (max != null && x.key.compareTo(max) >= 0) return false;
+        return isBST(x.left, min, x.key) && isBST(x.right, x.key, max);
+    }
+
+    // are the size fields correct?
+    private boolean isSizeConsistent() {
+        return isSizeConsistent(root);
+    }
+
+    private boolean isSizeConsistent(Node x) {
+        if (x == null) return true;
+        if (x.size != size(x.left) + size(x.right) + 1) return false;
+        return isSizeConsistent(x.left) && isSizeConsistent(x.right);
+    }
+
+    // check that ranks are consistent
+    private boolean isRankConsistent() {
+        for (int i = 0; i < size(); i++)
+            if (i != rank(select(i))) return false;
+        for (Key key : keys())
+            if (key.compareTo(select(rank(key))) != 0) return false;
+        return true;
     }
 }
