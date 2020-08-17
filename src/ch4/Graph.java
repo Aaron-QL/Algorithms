@@ -41,8 +41,8 @@ public class Graph {
             for (int v = 0; v < V; v++) {
                 adj[v] = new Bag<Integer>();
             }
-//            this.E = in.readInt();
-//            if (E < 0) throw new IllegalArgumentException("number of edges in a Graph must be nonnegative");
+            this.E = in.readInt();
+            if (E < 0) throw new IllegalArgumentException("number of edges in a Graph must be nonnegative");
             this.E = 0;
             for (int i = 0; i < this.V; i++) {
                 int v = in.readInt();
