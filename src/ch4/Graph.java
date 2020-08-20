@@ -12,7 +12,7 @@ public class Graph {
 
     private final String NEWLINE = System.getProperty("line.separator");
     private final int V;
-    private int E;
+    private int E = 0;
     private Bag<Integer>[] adj;
 
 
@@ -21,7 +21,6 @@ public class Graph {
             throw new IllegalArgumentException("Number of vertices must be nonnegative");
         }
         this.V = V;
-        this.E = 0;
         this.adj = (Bag<Integer>[]) new Bag[V];
         for (int v = 0; v < V; v++) {
             adj[v] = new Bag<Integer>();
@@ -41,10 +40,10 @@ public class Graph {
             for (int v = 0; v < V; v++) {
                 adj[v] = new Bag<Integer>();
             }
-            this.E = in.readInt();
-            if (E < 0) throw new IllegalArgumentException("number of edges in a Graph must be nonnegative");
-            this.E = 0;
-            for (int i = 0; i < this.V; i++) {
+
+            int j = in.readInt();
+            if (j < 0) throw new IllegalArgumentException("number of edges in a Graph must be nonnegative");
+            for (int i = 0; i < j; i++) {
                 int v = in.readInt();
                 int w = in.readInt();
                 this.addEdge(v, w);
