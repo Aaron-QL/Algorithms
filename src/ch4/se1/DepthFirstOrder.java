@@ -1,5 +1,6 @@
-package ch4;
+package ch4.se1;
 
+import ch4.se2.Digraph;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.Stack;
 

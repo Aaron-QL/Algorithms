@@ -1,31 +1,23 @@
-package ch4;
+package ch4.se1;
 
-public class Cycle {
+public class DepthFirstSearch {
     private boolean[] marked;
-    private boolean hasCycle;
+    private int count;
 
-    public Cycle(Graph G) {
+    public DepthFirstSearch(Graph G, int s) {
         this.marked = new boolean[G.V()];
-        for (int s = 0; s < G.V(); s++) {
-            if (!this.marked[s]) {
-                dfs(G, s, s);
-            }
-        }
+        this.validateVertex(s);
+        this.dfs(G, s);
     }
 
-    private void dfs(Graph G, int v, int u) {
+    private void dfs(Graph G, int v) {
+        this.count++;
         marked[v] = true;
         for (int w : G.adj(v)) {
             if (!this.marked(w)) {
-                dfs(G, w, v);
-            } else if (w != u) {
-                hasCycle = true;
+                dfs(G, w);
             }
         }
-    }
-
-    public boolean hasCycle() {
-        return this.hasCycle;
     }
 
     public boolean marked(int v) {
@@ -38,5 +30,9 @@ public class Cycle {
         if (v < 0 || v >= V) {
             throw new IllegalArgumentException("");
         }
+    }
+
+    public int count() {
+        return this.count;
     }
 }

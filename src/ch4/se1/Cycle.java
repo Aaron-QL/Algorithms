@@ -1,33 +1,31 @@
-package ch4;
+package ch4.se1;
 
-public class TwoColor {
+public class Cycle {
     private boolean[] marked;
-    private boolean[] color;
-    private boolean isTwoColorable = true;
+    private boolean hasCycle;
 
-    public TwoColor(Graph G) {
+    public Cycle(Graph G) {
         this.marked = new boolean[G.V()];
-        this.color = new boolean[G.V()];
         for (int s = 0; s < G.V(); s++) {
             if (!this.marked[s]) {
-                dfs(G, s);
+                dfs(G, s, s);
             }
         }
     }
 
-    private void dfs(Graph G, int v) {
+    private void dfs(Graph G, int v, int u) {
         marked[v] = true;
         for (int w : G.adj(v)) {
             if (!this.marked(w)) {
-                this.color[w] = !color[v];
-            } else if (this.color[w] == this.color[v]) {
-                this.isTwoColorable = false;
+                dfs(G, w, v);
+            } else if (w != u) {
+                hasCycle = true;
             }
         }
     }
 
-    public boolean isBipartite() {
-        return this.isTwoColorable;
+    public boolean hasCycle() {
+        return this.hasCycle;
     }
 
     public boolean marked(int v) {

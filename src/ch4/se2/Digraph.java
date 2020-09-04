@@ -1,4 +1,4 @@
-package ch4;
+package ch4.se2;
 
 import ch1.se3.Bag;
 import edu.princeton.cs.algs4.In;
