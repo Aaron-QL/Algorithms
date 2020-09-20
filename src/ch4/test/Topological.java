@@ -11,7 +11,7 @@ public class Topological {
 
         if (!cycleFinder.hasCycle()) {
             DepthFirstOrder depthFirstOrder = new DepthFirstOrder(digraph);
-            topologicalOrder = depthFirstOrder.reversePost();
+            topologicalOrder = depthFirstOrder.reversePostOrder();
         }
     }
 
