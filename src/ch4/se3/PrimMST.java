@@ -48,7 +48,7 @@ public class PrimMST {
                 this.distTo[w] = e.weight();
                 this.edgeTo[w] = e;
                 if (pq.contains(w)) {
-                    pq.changeKey(w, e.weight());
+                    pq.decreaseKey(w, e.weight());
                 } else {
                     pq.insert(w, e.weight());
                 }
