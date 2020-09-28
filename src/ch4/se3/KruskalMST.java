@@ -9,7 +9,7 @@ import edu.princeton.cs.algs4.UF;
 
 public class KruskalMST {
     private static final double FLOATING_POINT_EPSILON = 1E-12;
-    
+
     private Queue<Edge> mst = new Queue<Edge>();
     private int weight;
 
