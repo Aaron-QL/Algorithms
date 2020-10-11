@@ -1,26 +1,45 @@
 package ch4.se4;
 
 import ch1.se3.Bag;
-import ch4.test.Edge;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.NoSuchElementException;
 
 public class EdgeWeightedDigraph {
-    private final int vertices;
+    private static final String NEWLINE = System.getProperty("line.separator");
+    private final int V;
+    private int E;
     private Bag<DirectedEdge>[] adjacent;
-    private int edges;
-    private int[] indegree;
+    private int[] inDegree;
 
     public EdgeWeightedDigraph(int v) {
         if (v < 0) {
             throw new IllegalArgumentException();
         }
-        vertices = v;
-        this.indegree = new int[v];
-        adjacent = (Bag<DirectedEdge>[]) new Bag[v];
+
+        this.V = v;
+        adjacent = new Bag[v];
         for (int i = 0; i < v; i++) {
-            adjacent[i] = new Bag<>();
+            adjacent[i] = new Bag<DirectedEdge>();
+        }
+        inDegree = new int[v];
+    }
+
+
+    public EdgeWeightedDigraph(int v, int e) {
+        this(v);
+        if (e < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        for (int i = 0; i < e; i++) {
+            int u = StdRandom.uniform(V);
+            int w = StdRandom.uniform(V);
+            double weight = StdRandom.uniform(100) * 0.01;
+            DirectedEdge edge = new DirectedEdge(u, w, weight);
+            this.addEdge(edge);
         }
     }
 
@@ -30,64 +49,101 @@ public class EdgeWeightedDigraph {
         }
 
         try {
-            int v = in.readInt();
-            if (v < 0) {
+            this.V = in.readInt();
+            if (V < 0) {
                 throw new IllegalArgumentException();
             }
-            vertices = v;
-            this.indegree = new int[v];
-            adjacent = (Bag<DirectedEdge>[]) new Bag[v];
-            for (int i = 0; i < v; i++) {
-                adjacent[i] = new Bag<>();
+            adjacent = new Bag[V];
+            for (int i = 0; i < V; i++) {
+                adjacent[i] = new Bag<DirectedEdge>();
             }
+            inDegree = new int[V];
 
-            int e = in.readInt();
-            if (e < 0) {
+            int E = in.readInt();
+            if (E < 0) {
                 throw new IllegalArgumentException();
             }
-            for (int i = 0; i < e; i++) {
-                int from = in.readInt();
-                int to = in.readInt();
+            for (int i = 0; i < E; i++) {
+                int v = in.readInt();
+                int w = in.readInt();
+                validateVertex(v);
+                validateVertex(w);
                 double weight = in.readDouble();
-                DirectedEdge edge = new DirectedEdge(from, to, weight);
-                this.addEdage(edge);
+                addEdge(new DirectedEdge(v, w, weight));
             }
         } catch (NoSuchElementException e) {
             throw new IllegalArgumentException();
         }
     }
 
-    public void addEdage(DirectedEdge e) {
-        int from = e.from();
-        int to = e.to();
-        this.check(from);
-        this.check(to);
-        this.adjacent[from].add(e);
-        this.indegree[to]++;
-        this.edges++;
+    private void addEdge(DirectedEdge e) {
+        int v = e.from();
+        int w = e.to();
+        validateVertex(v);
+        validateVertex(w);
+        this.adjacent[v].add(e);
+        this.inDegree[w]++;
+        this.E++;
     }
 
-    public int vertices() {
-        return this.vertices;
-    }
-
-    public int edges() {
-        return this.edges;
-    }
-
-    public void check(int vertex) {
-        if (vertex < 0 || vertex >= this.vertices) {
+    private void validateVertex(int v) {
+        if (v < 0 || v >= V) {
             throw new IllegalArgumentException();
         }
     }
 
-    public int indegree(int v) {
-        this.check(v);
-        return this.indegree[v];
+    public int V() {
+        return V;
     }
 
-    public Iterable<DirectedEdge> adjacent(int vertex) {
-        this.check(vertex);
-        return this.adjacent[vertex];
+    public int E() {
+        return E;
+    }
+
+    public Iterable<DirectedEdge> adj(int v) {
+        validateVertex(v);
+        return this.adjacent[v];
+    }
+
+    public int inDegree(int v) {
+        validateVertex(v);
+        return this.inDegree[v];
+    }
+
+    public int outDegree(int v) {
+        validateVertex(v);
+        return this.adjacent[v].size();
+    }
+
+    public Iterable<DirectedEdge> edges() {
+        Bag<DirectedEdge> list = new Bag<>();
+        for (int i = 0; i < V; i++) {
+            for (DirectedEdge e : this.adjacent[i]) {
+                list.add(e);
+            }
+        }
+
+        return list;
+    }
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append(V + " " + E + NEWLINE);
+        for (int v = 0; v < V; v++) {
+            s.append(v + ": ");
+            for (DirectedEdge e : adjacent[v]) {
+                s.append(e + "  ");
+            }
+            s.append(NEWLINE);
+        }
+        return s.toString();
+    }
+
+    public static void main(String[] args) {
+//        In in = new In(args[0]);
+//        EdgeWeightedDigraph G = new EdgeWeightedDigraph(in);
+//        StdOut.println(G);
+
+        EdgeWeightedDigraph G = new EdgeWeightedDigraph(11, 14);
+        StdOut.println(G);
     }
 }

@@ -1,24 +1,34 @@
 package ch4.se4;
 
-public class DirectedEdge {
-    private final int v;
-    private final int w;
-    private final double weight;
 
-    public DirectedEdge(int from, int to, double weight) {
-        if (from < 0 || to < 0) {
+public class DirectedEdge {
+    private int v;
+    private int w;
+    private double weight;
+
+    public DirectedEdge(int v, int w, double weight) {
+        if (v < 0 || w < 0 || Double.isNaN(weight)) {
             throw new IllegalArgumentException();
         }
-        this.v = from;
-        this.w = to;
+
+        this.v = v;
+        this.w = w;
         this.weight = weight;
     }
 
     public int from() {
-        return this.v;
+        return v;
     }
 
     public int to() {
-        return this.w;
+        return w;
+    }
+
+    public double weight() {
+        return weight;
+    }
+
+    public String toString() {
+        return String.format("%d -> %d %5.2f", v, w, weight);
     }
 }
