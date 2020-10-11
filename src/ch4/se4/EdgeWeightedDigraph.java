@@ -76,7 +76,7 @@ public class EdgeWeightedDigraph {
         }
     }
 
-    private void addEdge(DirectedEdge e) {
+    public void addEdge(DirectedEdge e) {
         int v = e.from();
         int w = e.to();
         validateVertex(v);
